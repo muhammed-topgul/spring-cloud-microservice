@@ -36,6 +36,15 @@ public class AccountEntity implements Serializable {
     @Column(value = "pwd")
     private String passwd;
 
+    @Column(value = "name")
+    private String name;
+
+    @Column(value = "surname")
+    private String surname;
+
+    @Column(value = "birth_date")
+    private String birthDate;
+
     @Column(value = "created_at")
     private Date createdAt;
 
