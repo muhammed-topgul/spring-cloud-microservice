@@ -5,3 +5,21 @@ services:
     image: cassandra
     ports:
       - "9042:9042"
+
+  mysql:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: microservice-app
+    ports:
+      - '3306:3306'
+
+  elasticsearch:
+    image: elasticsearch:7.10.1
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "discovery.type=single-node"
+    restart: always
