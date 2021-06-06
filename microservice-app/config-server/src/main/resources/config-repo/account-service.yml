@@ -1,0 +1,9 @@
+spcloud:
+  cassandra:
+    port: 9042
+    contact:
+      point: localhost
+    keyspace:
+      name: springcloud
+    password: cassandra
+    username: cassandra
