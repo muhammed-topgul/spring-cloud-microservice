@@ -6,6 +6,8 @@ package com.muhammedtopgul.ticketservice.service.impl;
  * at 00:18
  */
 
+import com.muhammedtopgul.servicecommon.client.AccountServiceClient;
+import com.muhammedtopgul.servicecommon.client.contract.AccountDto;
 import com.muhammedtopgul.ticketservice.dto.TicketDto;
 import com.muhammedtopgul.ticketservice.entity.TicketEntity;
 import com.muhammedtopgul.ticketservice.entity.es.TicketElasticEntity;
@@ -18,9 +20,11 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -29,12 +33,14 @@ public class TicketServiceImpl implements TicketService {
     private final TicketElasticRepository elasticRepository;
     private final TicketRepository ticketRepository;
     private final ModelMapper mapper;
+    private final AccountServiceClient accountServiceClient;
 
     @Transactional
     @Override
     public TicketDto save(TicketDto dto) {
         TicketEntity entity = new TicketEntity();
         // TODO ticketEntity.setAssignee(), make confirmation from Account API
+        ResponseEntity<AccountDto> accountDto = accountServiceClient.get(dto.getAssignee());
         if (dto.getDescription() == null || dto.getDescription().trim().equals("")) {
             throw new IllegalArgumentException("Description cannot be null");
         }
@@ -44,11 +50,13 @@ public class TicketServiceImpl implements TicketService {
         entity.setTicketDate(dto.getTicketDate());
         entity.setTicketStatus(TicketStatus.valueOf(dto.getTicketStatus()));
         entity.setPriorityType(PriorityType.valueOf(dto.getPriorityType()));
+        entity.setAssignee(Objects.requireNonNull(accountDto.getBody()).getId());
         // 1. save to mysql
         entity = ticketRepository.save(entity);
 
         TicketElasticEntity elasticEntity = TicketElasticEntity.builder()
                 .id(entity.getId())
+                .assignee(Objects.requireNonNull(accountDto.getBody()).getNameAndSurname())
                 .description(entity.getDescription())
                 .notes(entity.getNotes())
                 .ticketDate(entity.getTicketDate())

@@ -6,9 +6,9 @@ package com.muhammedtopgul.accountservice.service;
  * at 12:12
  */
 
-import com.muhammedtopgul.accountservice.dto.AccountDto;
 import com.muhammedtopgul.accountservice.entity.AccountEntity;
 import com.muhammedtopgul.accountservice.repository.AccountRepository;
+import com.muhammedtopgul.servicecommon.client.contract.AccountDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Pageable;
@@ -40,7 +40,7 @@ public class AccountService {
     public AccountDto update(String accountId, AccountDto dto) {
         Assert.isNull(accountId, "Id cannot be null");
         AccountEntity entity = repository.findById(accountId).orElseThrow(IllegalArgumentException::new);
-        entity.setBirthDate(dto.getBirthDate());
+        entity.setBirthDate(dto.getBirthDate().toString());
         entity.setName(dto.getName());
         entity.setSurname(dto.getSurname());
         return mapper.map(repository.save(entity), AccountDto.class);

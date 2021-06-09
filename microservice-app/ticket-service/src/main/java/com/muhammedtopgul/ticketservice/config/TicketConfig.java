@@ -8,12 +8,14 @@ package com.muhammedtopgul.ticketservice.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
-@EnableJpaRepositories("com.muhammedtopgul.ticketservice")
+@EnableJpaRepositories("com.muhammedtopgul.ticketservice.repository")
+@ComponentScan("com.muhammedtopgul")
 @EnableElasticsearchRepositories
 public class TicketConfig {
 

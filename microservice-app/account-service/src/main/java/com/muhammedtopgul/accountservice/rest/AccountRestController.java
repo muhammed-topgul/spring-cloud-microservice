@@ -6,8 +6,8 @@ package com.muhammedtopgul.accountservice.rest;
  * at 12:10
  */
 
-import com.muhammedtopgul.accountservice.dto.AccountDto;
 import com.muhammedtopgul.accountservice.service.AccountService;
+import com.muhammedtopgul.servicecommon.client.contract.AccountDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
