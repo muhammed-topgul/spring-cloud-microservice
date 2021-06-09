@@ -15,10 +15,9 @@ import com.muhammedtopgul.ticketservice.enumeration.PriorityType;
 import com.muhammedtopgul.ticketservice.enumeration.TicketStatus;
 import com.muhammedtopgul.ticketservice.repository.TicketRepository;
 import com.muhammedtopgul.ticketservice.repository.es.TicketElasticRepository;
+import com.muhammedtopgul.ticketservice.service.NotificationPublisherService;
 import com.muhammedtopgul.ticketservice.service.TicketService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -33,10 +32,8 @@ public class TicketServiceImpl implements TicketService {
 
     private final TicketElasticRepository elasticRepository;
     private final TicketRepository ticketRepository;
-    private final ModelMapper mapper;
-
-    @Autowired
-    private AccountServiceClient accountServiceClient;
+    private final NotificationPublisherService notificationPublisherService;
+    private final AccountServiceClient accountServiceClient;
 
     @Transactional
     @Override
@@ -71,6 +68,9 @@ public class TicketServiceImpl implements TicketService {
         elasticRepository.save(elasticEntity);
 
         dto.setId(entity.getId());
+
+        // write to queue
+        notificationPublisherService.sendToQueue(entity);
         return dto;
     }
 
