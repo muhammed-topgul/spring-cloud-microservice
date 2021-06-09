@@ -18,6 +18,7 @@ import com.muhammedtopgul.ticketservice.repository.es.TicketElasticRepository;
 import com.muhammedtopgul.ticketservice.service.TicketService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,9 @@ public class TicketServiceImpl implements TicketService {
     private final TicketElasticRepository elasticRepository;
     private final TicketRepository ticketRepository;
     private final ModelMapper mapper;
-    private final AccountServiceClient accountServiceClient;
+
+    @Autowired
+    private AccountServiceClient accountServiceClient;
 
     @Transactional
     @Override

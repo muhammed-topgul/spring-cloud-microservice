@@ -15,6 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient("account-service")
 public interface AccountServiceClient {
 
-    @GetMapping("/{accountId}")
+    @GetMapping("/account/{accountId}")
     ResponseEntity<AccountDto> get(@PathVariable("accountId") String accountId);
 }
